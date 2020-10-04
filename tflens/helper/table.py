@@ -3,7 +3,7 @@ import markdown
 from pathlib import Path
 from beautifultable import BeautifulTable
 
-from tflens.src.model.tfstate_resource import TfStateResource
+from tflens.model.tfstate_resource import TfStateResource
 
 class TableHelper():
 

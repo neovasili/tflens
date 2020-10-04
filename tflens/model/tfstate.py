@@ -1,4 +1,4 @@
-from tflens.src.model.tfstate_resource import TfStateResource
+from tflens.model.tfstate_resource import TfStateResource
 
 class TfState():
 

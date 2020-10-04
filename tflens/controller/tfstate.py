@@ -1,7 +1,7 @@
-from tflens.src.model.tfstate import TfState
-from tflens.src.service.local_tfstate import LocalTfStateService
+from tflens.model.tfstate import TfState
+from tflens.service.local_tfstate import LocalTfStateService
 
-from tflens.src.helper.table import (
+from tflens.helper.table import (
   MarkdownTableHelper,
   HtmlTableHelper
 )

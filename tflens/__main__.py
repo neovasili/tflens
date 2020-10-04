@@ -2,7 +2,7 @@ import os
 import argparse
 from pathlib import Path
 
-from tflens.src.controller.tfstate import LocalTfStateController
+from tflens.controller.tfstate import LocalTfStateController
 
 parser = argparse.ArgumentParser(description='Ask for user specific information')
 
