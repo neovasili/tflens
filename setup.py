@@ -7,7 +7,6 @@ setuptools.setup(
   name="tflens-neovasili",
   version="0.0.1.dev1",
   author="Juan Manuel Ruiz Fernández",
-  author_email="jruizferprofesional@gmail.com",
   description="Terraform state viewer",
   keywords="terraform viewer state tfstate cli",
   long_description=long_description,
