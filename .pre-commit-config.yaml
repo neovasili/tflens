@@ -51,6 +51,7 @@ repos:
           - --indent-string='  '
           - --max-attributes=9
           - --max-args=9
+          - --max-line-length=120
           - -d bad-whitespace
           - -d bad-continuation
           - -d too-few-public-methods
@@ -60,15 +61,3 @@ repos:
           - -d missing-module-docstring
           - -d missing-class-docstring
           - -d missing-function-docstring
-
-  - repo: local
-    hooks:
-      - id: unittest
-        name: "Python unit tests"
-        entry: python3 -m unittest discover
-        language: python
-        types: [python]
-        args: [--start-directory=tests, --pattern=*_test.py, --verbose]
-        pass_filenames: false
-        always_run: true
-        verbose: true
