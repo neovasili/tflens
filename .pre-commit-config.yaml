@@ -1,0 +1,71 @@
+---
+fail_fast: true
+repos:
+  # Generic repos
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v2.4.0  # Use the ref you want to point at
+    hooks:
+      # This prevents issues if not managing git-lfs
+      - id: check-added-large-files
+      # This prevents problems for multi OS
+      - id: check-case-conflict
+      # This prevents having executables that cannot be executed
+      - id: check-executables-have-shebangs
+      # Check JSON, XML and YAML
+      - id: check-json
+      # Prevents commiting unmergeable files
+      - id: check-merge-conflict
+      # Removes spaces at end of lines
+      - id: trailing-whitespace
+        args: [--markdown-linebreak-ext=md]
+      # AWS Creds
+      - id: detect-aws-credentials
+        args: [--allow-missing-credentials]
+      # Prevents commiting to master
+      # - id: no-commit-to-branch
+
+  # Change tabs for spaces
+  - repo: https://github.com/Lucas-C/pre-commit-hooks
+    rev: v1.1.7
+    hooks:
+      - id: remove-tabs
+        args: [--whitespaces-count, "2"]
+
+  # For deploy and validation scripts
+  - repo: https://github.com/jumanjihouse/pre-commit-hooks
+    rev: 1.11.0
+    hooks:
+      - id: markdownlint
+        args: [--rules, "~MD013"]
+      - id: shellcheck
+        args: [-e, "SC2124"]
+
+  - repo: https://github.com/pycqa/pylint
+    rev: pylint-2.4.4
+    hooks:
+      - id: pylint
+        name: "Python lintern"
+        args:
+          - --ignore-imports=yes
+          - --indent-string='  '
+          - --max-attributes=9
+          - --max-args=9
+          - -d bad-whitespace
+          - -d bad-continuation
+          - -d too-few-public-methods
+          - -d import-error
+          - -d invalid-name
+          - -d anomalous-backslash-in-string
+          - -d missing-module-docstring
+          - -d missing-class-docstring
+          - -d missing-function-docstring
+
+  - repo: local
+    hooks:
+      - id: unittest
+        name: "Python unit tests"
+        entry: python3 -m unittest discover
+        language: python
+        types: [python]
+        args: [--start-directory=tests, --pattern=*_test.py]
+        pass_filenames: false
