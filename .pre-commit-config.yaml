@@ -70,4 +70,5 @@ repos:
         types: [python]
         args: [--start-directory=tests, --pattern=*_test.py, --verbose]
         pass_filenames: false
+        always_run: true
         verbose: true
