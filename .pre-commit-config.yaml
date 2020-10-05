@@ -68,5 +68,6 @@ repos:
         entry: python3 -m unittest discover
         language: python
         types: [python]
-        args: [--start-directory=tests, --pattern=*_test.py]
+        args: [--start-directory=tests, --pattern=*_test.py, --verbose]
         pass_filenames: false
+        verbose: true
