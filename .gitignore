@@ -1,8 +1,16 @@
 .DS_Store
+
 __pycache__
 .env
+
 dist/
 build/
 dev/
 .tflens
+
 .vscode
+
+.coverage
+htmlcov
+coverage.json
+coverage.xml

@@ -2,6 +2,7 @@
 
 ![pre-commit](https://github.com/neovasili/tflens/workflows/pre-commit/badge.svg)
 ![unit-tests](https://github.com/neovasili/tflens/workflows/unit-tests/badge.svg)
+![coverage](https://img.shields.io/static/v1.svg?label=coverage&message=38%25&color=orange)
 
 Terraform lens is a CLI tool that enables developers have a summarized view of tfstate resources.
 
@@ -65,7 +66,6 @@ Tabs remover.............................................................Passed
 Check markdown files.....................................................Passed
 Test shell scripts with shellcheck...................(no files to check)Skipped
 Python lintern...........................................................Passed
-Python unit tests........................................................Passed
 ```
 
 ## References
