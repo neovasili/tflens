@@ -1,6 +1,6 @@
 import os
-import markdown
 from pathlib import Path
+import markdown
 from beautifultable import BeautifulTable
 
 from tflens.model.tfstate_resource import TfStateResource

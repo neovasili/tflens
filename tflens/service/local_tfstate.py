@@ -8,9 +8,9 @@ class LocalTfStateService():
 
     try:
       path = pathlib.Path(file_location)
-      with path.open() as file:
+      with path.open():
         self.__file_location = file_location
-    
+
     except OSError as error:
       print(error)
 
