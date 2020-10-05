@@ -13,6 +13,7 @@ repos:
       - id: check-executables-have-shebangs
       # Check JSON, XML and YAML
       - id: check-json
+        exclude: 'resources/tests/broken_terraform.tfstate.json'
       # Prevents commiting unmergeable files
       - id: check-merge-conflict
       # Removes spaces at end of lines

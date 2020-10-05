@@ -1,6 +1,12 @@
 import json
 import pathlib
 
+from json.decoder import JSONDecodeError
+from tflens.exception.exception import (
+  CannotLoadLocalFile,
+  CannotReadLocalFile
+)
+
 class LocalTfStateService():
 
   def __init__(self, file_location: str):
@@ -11,9 +17,13 @@ class LocalTfStateService():
       with path.open():
         self.__file_location = file_location
 
-    except OSError as error:
-      print(error)
+    except OSError:
+      raise CannotLoadLocalFile
 
   def read_content(self):
-    with open(self.__file_location, 'r') as tfstate_file:
-      return json.loads(tfstate_file.read())
+    try:
+      with open(self.__file_location, 'r') as tfstate_file:
+        return json.loads(tfstate_file.read())
+
+    except JSONDecodeError:
+      raise CannotReadLocalFile
