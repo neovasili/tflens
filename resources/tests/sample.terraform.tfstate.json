@@ -1,0 +1,22 @@
+{
+  "version": 4,
+  "terraform_version": "0.12.18",
+  "serial": 153,
+  "lineage": "xxxxxx-xxxx-xxx-xxxx-xxxxxx",
+  "outputs": {
+    "test_output": {
+      "value": "test",
+      "type": "string"
+    }
+  },
+  "resources": [
+    {
+      "module": "module.test",
+      "mode": "data",
+      "type": "aws_caller_identity",
+      "name": "current_user",
+      "provider": "provider.aws",
+      "instances": []
+    }
+  ]
+}

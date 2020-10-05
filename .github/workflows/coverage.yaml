@@ -19,8 +19,9 @@ jobs:
         run: source .env/bin/activate
       - name: Compute code coverage
         run: |
-          PYTHONPATH=./ coverage run --omit=*.env*,*tests/* tests/helpers_test.py
-          PYTHONPATH=./ coverage run -a --omit=*.env*,*tests/* tests/models_test.py
-          PYTHONPATH=./ coverage run -a --omit=*.env*,*tests/* tests/services_test.py
+          PYTHONPATH=./ coverage run --omit='*.env*,*tests/*' tests/helpers_test.py
+          PYTHONPATH=./ coverage run -a --omit='*.env*,*tests/*' tests/models_test.py
+          PYTHONPATH=./ coverage run -a --omit='*.env*,*tests/*' tests/services_test.py
+          PYTHONPATH=./ coverage run -a --omit='*.env*,*tests/*' tests/controllers_test.py
           coverage json
           jq -r '.totals.percent_covered' coverage.json | cut -d . -f 1 | xargs echo "CODE COVERAGE:"
