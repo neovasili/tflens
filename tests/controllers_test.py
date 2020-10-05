@@ -4,6 +4,10 @@ import io
 import sys
 import json
 
+from tflens.helper.config import (
+  MARKDOWN_PRINT_TABLE_OUTPUT,
+  FILE_HTML_OUTPUT
+)
 from tflens.controller.tfstate import (
   TfStateController,
   LocalTfStateController
@@ -14,39 +18,11 @@ EXISTING_FILE = 'resources/tests/sample.terraform.tfstate.json'
 with open(EXISTING_FILE, 'r') as tfstate_file:
   TFSTATE_CONTENT = json.loads(tfstate_file.read())
 
-PRINT_TABLE_OUTPUT = '''
-|   provider   |        type         | mode |     name     | module |
-|--------------|---------------------|------|--------------|--------|
-| provider.aws | aws_caller_identity | data | current_user |  test  |
-'''
-FILE_HTML_OUTPUT = '''
-<table>
-<thead>
-<tr>
-<th>provider</th>
-<th>type</th>
-<th>mode</th>
-<th>name</th>
-<th>module</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>provider.aws</td>
-<td>aws_caller_identity</td>
-<td>data</td>
-<td>current_user</td>
-<td>test</td>
-</tr>
-</tbody>
-</table>
-'''
-
 class TestTfStateController(unittest.TestCase):
 
   def setUp(self):
     self.tfstate_content = TFSTATE_CONTENT
-    self.print_table_output = PRINT_TABLE_OUTPUT
+    self.print_table_output = MARKDOWN_PRINT_TABLE_OUTPUT
     self.file_htmltable_output = FILE_HTML_OUTPUT
 
   def test_show_resources(self):
@@ -80,7 +56,7 @@ class TestLocalTfStateController(unittest.TestCase):
   def setUp(self):
     self.existing_file = EXISTING_FILE
     self.tfstate_content = TFSTATE_CONTENT
-    self.print_table_output = PRINT_TABLE_OUTPUT
+    self.print_table_output = MARKDOWN_PRINT_TABLE_OUTPUT
     self.file_htmltable_output = FILE_HTML_OUTPUT
 
   def test_local_tfstate_controller(self):
