@@ -4,6 +4,11 @@ import io
 import sys
 
 from beautifultable import BeautifulTable
+from tflens.helper.config import (
+  DEFAULT_PRINT_TABLE_OUTPUT,
+  MARKDOWN_PRINT_TABLE_OUTPUT,
+  FILE_HTML_OUTPUT
+)
 from tflens.model.tfstate_resource import TfStateResource
 from tflens.helper.table import (
   TableHelper,
@@ -39,13 +44,7 @@ class TestTableHelper(unittest.TestCase):
     self.valid_module_resource = VALID_MODULE_RESOURCE
     self.valid_non_module_resource = VALID_NON_MODULE_RESOURCE
     self.non_valid_resource = NON_VALID_RESOURCE
-    self.print_table_output = '''
-+--------------+---------------------+------+--------------+--------+
-|   provider   |        type         | mode |     name     | module |
-+--------------+---------------------+------+--------------+--------+
-| provider.aws | aws_caller_identity | data | current_user |  test  |
-+--------------+---------------------+------+--------------+--------+
-'''
+    self.print_table_output = DEFAULT_PRINT_TABLE_OUTPUT
 
   def test_valid_table_with_one_row(self):
     TableHelper([TfStateResource(self.valid_module_resource)])
@@ -86,11 +85,7 @@ class TestMarkdownTableHelper(unittest.TestCase):
 
   def setUp(self):
     self.valid_module_resource = VALID_MODULE_RESOURCE
-    self.print_markdowntable_output = '''
-|   provider   |        type         | mode |     name     | module |
-|--------------|---------------------|------|--------------|--------|
-| provider.aws | aws_caller_identity | data | current_user |  test  |
-'''
+    self.print_markdowntable_output = MARKDOWN_PRINT_TABLE_OUTPUT
 
   def test_print_markdowntable(self):
     table = MarkdownTableHelper([TfStateResource(self.valid_module_resource)])
@@ -113,33 +108,8 @@ class TestHtmlTableHelper(unittest.TestCase):
 
   def setUp(self):
     self.valid_module_resource = VALID_MODULE_RESOURCE
-    self.print_htmltable_output = '''
-|   provider   |        type         | mode |     name     | module |
-|--------------|---------------------|------|--------------|--------|
-| provider.aws | aws_caller_identity | data | current_user |  test  |
-'''
-    self.file_htmltable_output = '''
-<table>
-<thead>
-<tr>
-<th>provider</th>
-<th>type</th>
-<th>mode</th>
-<th>name</th>
-<th>module</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>provider.aws</td>
-<td>aws_caller_identity</td>
-<td>data</td>
-<td>current_user</td>
-<td>test</td>
-</tr>
-</tbody>
-</table>
-'''
+    self.print_htmltable_output = MARKDOWN_PRINT_TABLE_OUTPUT
+    self.file_htmltable_output = FILE_HTML_OUTPUT
 
   def test_print_htmltable(self):
     table = HtmlTableHelper([TfStateResource(self.valid_module_resource)])
