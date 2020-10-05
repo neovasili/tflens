@@ -1,5 +1,7 @@
 # Terraform lens
 
+![pre-commit](https://github.com/neovasili/tflens/workflows/pre-commit/badge.svg)
+
 Terraform lens is a CLI tool that enables developers have a summarized view of tfstate resources.
 
 ## Development
