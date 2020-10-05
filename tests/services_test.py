@@ -26,10 +26,12 @@ class TestLocalTfStateService(unittest.TestCase):
   def test_read_content_local_file(self):
     local_tfstate_service = LocalTfStateService(self.existing_file)
     content = local_tfstate_service.read_content()
+
     self.assertIsInstance(content, dict)
 
   def test_cannot_read_content_local_file(self):
     local_tfstate_service = LocalTfStateService(self.broken_file)
+
     self.assertRaises(
       CannotReadLocalFile,
       local_tfstate_service.read_content

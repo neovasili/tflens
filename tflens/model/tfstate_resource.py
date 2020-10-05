@@ -24,10 +24,10 @@ class TfStateResource():
       self.__type,
       self.__mode,
       self.__name,
-      self.__get_parent_module()
+      self.get_parent_module()
     ]
 
-  def __get_parent_module(self):
+  def get_parent_module(self):
     return self.__module.split('.')[1] if self.__module else '(None)'
 
   def get_instances_count(self):
