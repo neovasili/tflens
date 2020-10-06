@@ -16,3 +16,8 @@ class CannotReadLocalFile(CustomException):
 
   def __init__(self):
     super().__init__("Cannot read local tfstate")
+
+class CannotLoadRemoteFile(CustomException):
+
+  def __init__(self):
+    super().__init__("Cannot load remote tfstate")

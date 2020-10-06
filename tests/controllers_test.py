@@ -4,7 +4,7 @@ import io
 import sys
 import json
 
-from tflens.helper.config import (
+from tests_config import (
   MARKDOWN_PRINT_TABLE_OUTPUT,
   FILE_HTML_OUTPUT
 )
