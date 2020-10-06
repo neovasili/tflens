@@ -9,17 +9,17 @@ on:
 jobs:
   build-publish:
     runs-on: ubuntu-latest
-      steps:
-        - uses: actions/checkout@v2
-        - uses: actions/setup-python@v2
-          with:
-            python-version: '3.8'
-        - name: Install dependencies
-          run: |
-            pip3 install -r requirements.txt
-            python3 -m pip install --upgrade setuptools wheel
-            python3 -m pip install --upgrade twine
-        - name: Build package
-          run: python3 setup.py sdist bdist_wheel
-        - name: Publish to Test Pypi
-          run: python3 -m twine upload --repository testpypi --username __token__ --password ${{ secrets.test_pypi_api_token }} dist/*
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+        with:
+          python-version: '3.8'
+      - name: Install dependencies
+        run: |
+          pip3 install -r requirements.txt
+          python3 -m pip install --upgrade setuptools wheel
+          python3 -m pip install --upgrade twine
+      - name: Build package
+        run: python3 setup.py sdist bdist_wheel
+      - name: Publish to Test Pypi
+        run: python3 -m twine upload --repository testpypi --username __token__ --password ${{ secrets.test_pypi_api_token }} dist/*
