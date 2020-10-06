@@ -4,8 +4,8 @@ with open("README.md", "r") as fh:
   long_description = fh.read()
 
 setuptools.setup(
-  name="tflens-neovasili",
-  version="0.0.1.dev1",
+  name="tflens",
+  version="1.0.0",
   author="Juan Manuel Ruiz Fernández",
   description="Terraform state viewer",
   keywords="terraform viewer state tfstate cli",
@@ -17,7 +17,7 @@ setuptools.setup(
     "console_scripts": ['tflens = tflens.__main__:main']
   },
   classifiers=[
-    "Development Status :: 3 - Alpha",
+    "Development Status :: 5 - Production/Stable",
     "Environment :: Console",
     "Intended Audience :: Developers",
     "License :: OSI Approved :: MIT License",
