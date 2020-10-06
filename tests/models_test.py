@@ -1,75 +1,22 @@
 import unittest
 
+from tests_config import (
+  VALID_TFSTATE_CONTENT_WITH_RESOURCES,
+  VALID_TFSTATE_CONTENT_NO_RESOURCES,
+  NON_VALID_TFSTATE_CONTENT,
+  VALID_MODULE_RESOURCE,
+  VALID_NON_MODULE_RESOURCE,
+  NON_VALID_RESOURCE
+)
 from tflens.model.tfstate import TfState
 from tflens.model.tfstate_resource import TfStateResource
 
 class TestTfState(unittest.TestCase):
 
   def setUp(self):
-    self.valid_content = {
-      'version': 4,
-      'terraform_version': "0.12.18",
-      'serial': 153,
-      'lineage': "xxxxxx-xxxx-xxx-xxxx-xxxxxx",
-      'outputs': {
-        'test_output': {
-          'value': 'test',
-          'type': 'string'
-        }
-      },
-      'resources': [
-        {
-          'module': 'module.test',
-          'mode': 'data',
-          'type': 'aws_caller_identity',
-          'name': 'current_user',
-          'provider': 'provider.aws',
-          'instances': [
-            {
-              'schema_version': 0,
-              'attributes': {
-                'account_id': '123456789011',
-                'arn': 'arn:aws:sts::123456789011:assumed-role/test/test_user_email',
-                'id': '2020-02-20 22:10:40.720934 +0000 UTC',
-                'user_id': 'XXXXXXXXXXXXX:test_user_email'
-              }
-            }
-          ]
-        },
-        {
-          'mode': 'managed',
-          'type': 'aws_dynamodb_table',
-          'name': 'dynamodb-terraform-state-lock',
-          'provider': 'provider.aws',
-          'instances': []
-        }
-      ]
-    }
-    self.valid_content_no_resources = {
-      'version': 4,
-      'terraform_version': "0.12.18",
-      'serial': 153,
-      'lineage': "xxxxxx-xxxx-xxx-xxxx-xxxxxx",
-      'outputs': {
-        'test_output': {
-          'value': 'test',
-          'type': 'string'
-        }
-      },
-      'resources': []
-    }
-    self.non_valid_content = {
-      'version': 4,
-      'terraform_version': "0.12.18",
-      'serial': 153,
-      'lineage': "xxxxxx-xxxx-xxx-xxxx-xxxxxx",
-      'outputs': {
-        'test_output': {
-          'value': 'test',
-          'type': 'string'
-        }
-      }
-    }
+    self.valid_content = VALID_TFSTATE_CONTENT_WITH_RESOURCES
+    self.valid_content_no_resources = VALID_TFSTATE_CONTENT_NO_RESOURCES
+    self.non_valid_content = NON_VALID_TFSTATE_CONTENT
 
   def test_valid_tfstate_content(self):
     TfState(self.valid_content)
@@ -99,27 +46,9 @@ class TestTfState(unittest.TestCase):
 class TestTfStateResource(unittest.TestCase):
 
   def setUp(self):
-    self.valid_module_resource = {
-      'module': 'module.test',
-      'mode': 'data',
-      'type': 'aws_caller_identity',
-      'name': 'current_user',
-      'provider': 'provider.aws',
-      'instances': []
-    }
-    self.valid_non_module_resource = {
-      'mode': 'managed',
-      'type': 'aws_dynamodb_table',
-      'name': 'dynamodb-terraform-state-lock',
-      'provider': 'provider.aws',
-      'instances': []
-    }
-    self.non_valid_resource = {
-      'mode': 'managed',
-      'name': 'dynamodb-terraform-state-lock',
-      'provider': 'provider.aws',
-      'instances': []
-    }
+    self.valid_module_resource = VALID_MODULE_RESOURCE
+    self.valid_non_module_resource = VALID_NON_MODULE_RESOURCE
+    self.non_valid_resource = NON_VALID_RESOURCE
 
   def test_valid_module_resource(self):
     tfstate_resource = TfStateResource(self.valid_module_resource)

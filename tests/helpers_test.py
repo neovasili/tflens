@@ -4,10 +4,13 @@ import io
 import sys
 
 from beautifultable import BeautifulTable
-from tflens.helper.config import (
+from tests_config import (
   DEFAULT_PRINT_TABLE_OUTPUT,
   MARKDOWN_PRINT_TABLE_OUTPUT,
-  FILE_HTML_OUTPUT
+  FILE_HTML_OUTPUT,
+  VALID_MODULE_RESOURCE,
+  VALID_NON_MODULE_RESOURCE,
+  NON_VALID_RESOURCE
 )
 from tflens.model.tfstate_resource import TfStateResource
 from tflens.helper.table import (
@@ -15,28 +18,6 @@ from tflens.helper.table import (
   MarkdownTableHelper,
   HtmlTableHelper
 )
-
-VALID_MODULE_RESOURCE = {
-  'module': 'module.test',
-  'mode': 'data',
-  'type': 'aws_caller_identity',
-  'name': 'current_user',
-  'provider': 'provider.aws',
-  'instances': []
-}
-VALID_NON_MODULE_RESOURCE = {
-  'mode': 'managed',
-  'type': 'aws_dynamodb_table',
-  'name': 'dynamodb-terraform-state-lock',
-  'provider': 'provider.aws',
-  'instances': []
-}
-NON_VALID_RESOURCE = {
-  'mode': 'managed',
-  'name': 'dynamodb-terraform-state-lock',
-  'provider': 'provider.aws',
-  'instances': []
-}
 
 class TestTableHelper(unittest.TestCase):
 
