@@ -1,6 +1,8 @@
 from tflens.model.tfstate import TfState
-from tflens.service.local_tfstate import LocalTfStateService
-
+from tflens.service.tfstate import (
+  RemoteS3TfStateService,
+  LocalTfStateService
+)
 from tflens.helper.table import (
   MarkdownTableHelper,
   HtmlTableHelper
@@ -43,4 +45,15 @@ class LocalTfStateController(TfStateController):
 
     super().__init__(
       tfstate_content=self.__local_tfstate_service.read_content()
+    )
+
+class RemoteS3TfStateController(TfStateController):
+
+  def __init__(self, file_location: str):
+    self.__remote_s3_tfstate_service = RemoteS3TfStateService(
+      file_location=file_location
+    )
+
+    super().__init__(
+      tfstate_content=self.__remote_s3_tfstate_service.read_content()
     )
