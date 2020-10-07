@@ -5,14 +5,21 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
   name="tflens",
-  version="1.0.0",
+  version="0.1.0",
   author="Juan Manuel Ruiz Fernández",
   description="Terraform state viewer",
   keywords="terraform viewer state tfstate cli",
   long_description=long_description,
   long_description_content_type="text/markdown",
   url="https://github.com/neovasili/tflens",
-  packages=setuptools.find_packages(),
+  packages=setuptools.find_packages(include=[
+    'tflens',
+    'tflens.controller',
+    'tflens.exception',
+    'tflens.helper',
+    'tflens.model',
+    'tflens.service'
+  ]),
   entry_points = {
     "console_scripts": ['tflens = tflens.__main__:main']
   },
