@@ -58,9 +58,9 @@ class TestRemoteS3TfStateService(unittest.TestCase):
 class TestLocalTfStateService(unittest.TestCase):
 
   def setUp(self):
-    self.existing_file = 'resources/tests/terraform.tfstate.json'
-    self.broken_file = 'resources/tests/broken_terraform.tfstate.json'
-    self.non_existing_file = 'resources/tests/fake_terraform.tfstate.json'
+    self.existing_file = 'resources/tests/terraform.tfstate'
+    self.broken_file = 'resources/tests/broken_terraform.tfstate'
+    self.non_existing_file = 'resources/tests/fake_terraform.tfstate'
 
   def test_open_existing_local_file(self):
     LocalTfStateService(self.existing_file)

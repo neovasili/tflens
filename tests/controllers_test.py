@@ -13,7 +13,7 @@ from tflens.controller.tfstate import (
   LocalTfStateController
 )
 
-EXISTING_FILE = 'resources/tests/sample.terraform.tfstate.json'
+EXISTING_FILE = 'resources/tests/sample.terraform.tfstate'
 
 with open(EXISTING_FILE, 'r') as tfstate_file:
   TFSTATE_CONTENT = json.loads(tfstate_file.read())
@@ -37,7 +37,7 @@ class TestTfStateController(unittest.TestCase):
     tfstate_controller = TfStateController(self.tfstate_content)
     tfstate_controller.create_markdown_file()
 
-    with open('.tflens/terraform.tfstate.json.md', 'r') as markdown_file:
+    with open('.tflens/terraform.tfstate.md', 'r') as markdown_file:
       markdown_file_content = markdown_file.read()
 
     self.assertEqual(markdown_file_content.replace('\n', ''), self.print_table_output.replace('\n', ''))
@@ -46,7 +46,7 @@ class TestTfStateController(unittest.TestCase):
     tfstate_controller = TfStateController(self.tfstate_content)
     tfstate_controller.create_html_file()
 
-    with open('.tflens/terraform.tfstate.json.html', 'r') as html_file:
+    with open('.tflens/terraform.tfstate.html', 'r') as html_file:
       html_file_content = html_file.read()
 
     self.assertEqual(html_file_content.replace('\n', ''), self.file_htmltable_output.replace('\n', ''))
@@ -74,7 +74,7 @@ class TestLocalTfStateController(unittest.TestCase):
     local_tfstate_controller = LocalTfStateController(self.existing_file)
     local_tfstate_controller.create_markdown_file()
 
-    with open('.tflens/terraform.tfstate.json.md', 'r') as markdown_file:
+    with open('.tflens/terraform.tfstate.md', 'r') as markdown_file:
       markdown_file_content = markdown_file.read()
 
     self.assertEqual(markdown_file_content.replace('\n', ''), self.print_table_output.replace('\n', ''))
@@ -83,7 +83,7 @@ class TestLocalTfStateController(unittest.TestCase):
     local_tfstate_controller = LocalTfStateController(self.existing_file)
     local_tfstate_controller.create_html_file()
 
-    with open('.tflens/terraform.tfstate.json.html', 'r') as html_file:
+    with open('.tflens/terraform.tfstate.html', 'r') as html_file:
       html_file_content = html_file.read()
 
     self.assertEqual(html_file_content.replace('\n', ''), self.file_htmltable_output.replace('\n', ''))

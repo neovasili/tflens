@@ -7,72 +7,52 @@
 
 Terraform lens is a CLI tool that enables developers have a summarized view of tfstate resources.
 
-## Development
+## Description
 
-For use this project in your local machine it's recommended to create a python virtual environment. To manually create a virtualenv on MacOS and Linux:
+It will produce a table with the resources in a given terraform tfstate with the following columns:
 
-```bash
-python3 -m venv .env
-```
+* provider
+* type
+* mode
+* name
+* module
 
-After the init process completes and the virtualenv is created, you can use the following
-step to activate your virtualenv.
+Example:
+|   provider   |        type         |   mode  |           name                | module |
+|--------------|---------------------|---------|-------------------------------|--------|
+| provider.aws | aws_caller_identity |   data  |        current_user           |  test  |
+| provider.aws |  aws_dynamodb_table | managed | dynamodb-terraform-state-lock | (None) |
 
-```bash
-source .env/bin/activate
-```
+### Features
 
-Once the virtualenv is activated, you can install the required dependencies.
+Currently, the tool supports read the tfstate file from a **local file** or a **remote state stored in S3**.
 
-```bash
-pip3 install -r requirements.txt
-```
+Regarding the produced output, there are three possibilities:
 
-### Pre-commit
+* **CLI output**. This will show the table directly in the terminal.
+* **Markdown** file. This will creates a file `.tflens/terraform.tfstate.json.md` in the current directory with the table.
+* **HTML** file. It's also possible to create an html file `.tflens/terraform.tfstate.json.html` in the current directory with the table.
 
-A pre-commit configuration file is provided in this repo to perform some linterns, validations and so on in order to avoid commit code to the repo that later will fail in validations step in the build pipeline.
+The tool has been tested with tfstate files for the following terraform versions:
 
-The first execution can be slower because of installation of dependencies. Further executions will use the pre-commit cache.
+* 0.12.0 - 0.12.29
+* 0.13.0 - 0.13.4
 
-#### Pre-commit requirements
-
-In order to use pre-commit with all the hooks declared you need to install the following:
-
-* [Pre-commit](https://pre-commit.com/#install)
-* [Markdownlint](https://github.com/markdownlint/markdownlint) (also requires ruby)
-* [Shellcheck](https://github.com/koalaman/shellcheck)
-* [pylint](https://www.pylint.org/#install)
-
-#### Use pre-commit
-
-Once you have all the requirements achieved, you have to install pre-commit in the local repository:
+## Usage
 
 ```bash
-pre-commit install
+➜ tflens --help
+
+usage: tflens [-h] [-f FILE_LOCATION] [-o OUTPUT] [-r REMOTE]
+
+Ask for user specific information
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -f FILE_LOCATION, --file-location FILE_LOCATION
+                        Defines the location of the tfstate file. If empty then use the current_folder/terraform.tfstate.json
+  -o OUTPUT, --output OUTPUT
+                        Defines output type (markdown|html). If empty outputs in terminal
+  -r REMOTE, --remote REMOTE
+                        Defines if remote (s3) or local tfstate file. If empty local is used
 ```
-
-And you can test it's working with the following:
-
-```bash
-➜ pre-commit run --all-files
-
-Check for added large files..............................................Passed
-Check for case conflicts.................................................Passed
-Check that executables have shebangs.................(no files to check)Skipped
-Check JSON...........................................(no files to check)Skipped
-Check for merge conflicts................................................Passed
-Trim Trailing Whitespace.................................................Passed
-Detect AWS Credentials...................................................Passed
-Tabs remover.............................................................Passed
-Check markdown files.....................................................Passed
-Test shell scripts with shellcheck...................(no files to check)Skipped
-Python lintern...........................................................Passed
-```
-
-## References
-
-* [Pypi packaging](https://packaging.python.org/tutorials/packaging-projects/)
-* [Pypi setup docs](https://packaging.python.org/guides/distributing-packages-using-setuptools/)
-* [Pypi classifiers](https://pypi.org/classifiers/)
-* [Pypi test register](https://test.pypi.org/account/register/)
-* [Pypi test usage](https://packaging.python.org/guides/using-testpypi/)

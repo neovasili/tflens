@@ -30,7 +30,7 @@ class MarkdownTableHelper(TableHelper):
 
   def write_markdown_file(self):
     Path('.tflens').mkdir(parents=True, exist_ok=True)
-    markdown_file_path = '.tflens/terraform.tfstate.json.md'
+    markdown_file_path = '.tflens/terraform.tfstate.md'
 
     with open(markdown_file_path, 'w') as markdown_file:
       print(self.table, file=markdown_file)
@@ -43,7 +43,7 @@ class HtmlTableHelper(TableHelper):
 
   def write_html_file(self):
     Path('.tflens').mkdir(parents=True, exist_ok=True)
-    html_file_path = '.tflens/terraform.tfstate.json.html'
+    html_file_path = '.tflens/terraform.tfstate.html'
 
     markdown_file_path = '.tflens/temp.md'
     with open(markdown_file_path, 'w') as markdown_file:
