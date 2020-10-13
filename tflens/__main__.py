@@ -6,13 +6,17 @@ from tflens.controller.tfstate import (
   LocalTfStateController
 )
 
-parser = argparse.ArgumentParser(description='Ask for user specific information')
+parser = argparse.ArgumentParser(
+  description='Terraform lens is a CLI tool that enables developers have a summarized view of tfstate resources.'
+)
 
 parser.add_argument('-f', '--file-location',
   type=str,
   action="store",
   dest="file_location",
-  help="Defines the location of the tfstate file. If empty then use the current_folder/terraform.tfstate",
+  help="Defines the location (remote or local) of the tfstate file. \
+    Mandatory if remote tfstate is selected. \
+      If empty then use the current_folder/terraform.tfstate",
   default="")
 
 parser.add_argument('-o', '--output',
@@ -26,7 +30,9 @@ parser.add_argument('-r', '--remote',
   type=str,
   action="store",
   dest="remote",
-  help="Defines if remote (s3) or local tfstate file. If empty local is used",
+  help="Defines if remote (s3) or local tfstate file. If empty local is used. \
+    When remote is defined, you also need to specify --file-location with the tfstate location \
+      according to the following pattern: bucket-name/tfstate-key",
   default="")
 
 args = parser.parse_args()
