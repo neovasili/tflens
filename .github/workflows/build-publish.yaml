@@ -21,5 +21,5 @@ jobs:
           python3 -m pip install --upgrade twine
       - name: Build package
         run: python3 setup.py sdist bdist_wheel
-      - name: Publish to Test Pypi
-        run: python3 -m twine upload --username ${{ secrets.pypi_username }} --password ${{ secrets.pypi_api_token }} --skip-existing dist/*
+      - name: Publish to Pypi
+        run: python3 -m twine upload --username "${{ secrets.pypi_username }}" --password "${{ secrets.pypi_api_token }}" dist/*
