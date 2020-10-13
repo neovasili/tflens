@@ -12,7 +12,7 @@ parser.add_argument('-f', '--file-location',
   type=str,
   action="store",
   dest="file_location",
-  help="Defines the location of the tfstate file. If empty then use the current_folder/terraform.tfstate.json",
+  help="Defines the location of the tfstate file. If empty then use the current_folder/terraform.tfstate",
   default="")
 
 parser.add_argument('-o', '--output',
@@ -36,7 +36,7 @@ ARGS_FILE_LOCATION = args.file_location
 ARGS_OUTPUT = args.output
 
 if not ARGS_FILE_LOCATION:
-  ARGS_FILE_LOCATION = "{}/terraform.tfstate.json".format(Path().absolute())
+  ARGS_FILE_LOCATION = "{}/terraform.tfstate".format(Path().absolute())
 
 def main():
   remote_router = {

@@ -80,7 +80,7 @@ class TestMarkdownTableHelper(unittest.TestCase):
     table = MarkdownTableHelper([TfStateResource(self.valid_module_resource)])
     table.write_markdown_file()
 
-    with open('.tflens/terraform.tfstate.json.md', 'r') as markdown_file:
+    with open('.tflens/terraform.tfstate.md', 'r') as markdown_file:
       markdown_file_content = markdown_file.read()
 
     self.assertEqual(markdown_file_content.replace('\n', ''), self.print_markdowntable_output.replace('\n', ''))
@@ -104,7 +104,7 @@ class TestHtmlTableHelper(unittest.TestCase):
     table = HtmlTableHelper([TfStateResource(self.valid_module_resource)])
     table.write_html_file()
 
-    with open('.tflens/terraform.tfstate.json.html', 'r') as html_file:
+    with open('.tflens/terraform.tfstate.html', 'r') as html_file:
       html_file_content = html_file.read()
 
     self.assertEqual(html_file_content.replace('\n', ''), self.file_htmltable_output.replace('\n', ''))
