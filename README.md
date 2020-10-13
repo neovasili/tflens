@@ -39,6 +39,14 @@ The tool has been tested with tfstate files for the following terraform versions
 * 0.12.0 - 0.12.29
 * 0.13.0 - 0.13.4
 
+## Install
+
+As the content of this repo is a Pypi package, you can easily install it using pip:
+
+```bash
+pip install tflens
+```
+
 ## Usage
 
 ```bash
@@ -46,14 +54,56 @@ The tool has been tested with tfstate files for the following terraform versions
 
 usage: tflens [-h] [-f FILE_LOCATION] [-o OUTPUT] [-r REMOTE]
 
-Ask for user specific information
+Terraform lens is a CLI tool that enables developers have a summarized view of tfstate resources.
 
 optional arguments:
   -h, --help            show this help message and exit
   -f FILE_LOCATION, --file-location FILE_LOCATION
-                        Defines the location of the tfstate file. If empty then use the current_folder/terraform.tfstate.json
+        Defines the location (remote or local) of the tfstate file.
+        Mandatory if remote tfstate is selected.
+        If empty then use the current_folder/terraform.tfstate
   -o OUTPUT, --output OUTPUT
-                        Defines output type (markdown|html). If empty outputs in terminal
+        Defines output type (markdown|html).
+        If empty outputs in terminal
   -r REMOTE, --remote REMOTE
-                        Defines if remote (s3) or local tfstate file. If empty local is used
+        Defines if remote (s3) or local tfstate file.
+        If empty local is used.
+        When remote is defined, you also need to specify --file-location with the tfstate location
+        according to the following pattern: bucket-name/tfstate-key
+```
+
+### Examples
+
+View table of resources for a tfstate located in the file system in the directory:
+
+```bash
+➜ tflens
+
+|   provider   |        type         |   mode  |           name                | module |
+|--------------|---------------------|---------|-------------------------------|--------|
+| provider.aws | aws_caller_identity |   data  |        current_user           |  test  |
+| provider.aws |  aws_dynamodb_table | managed | dynamodb-terraform-state-lock | (None) |
+```
+
+View table of resources for a tfstate located in the file system in the `dev/terraform.tfstate.json` path:
+
+```bash
+➜ tflens --file-location dev/terraform.tfstate.json
+
+|   provider   |        type         |   mode  |           name                | module |
+|--------------|---------------------|---------|-------------------------------|--------|
+| provider.aws | aws_caller_identity |   data  |        current_user           |  test  |
+| provider.aws |  aws_dynamodb_table | managed | dynamodb-terraform-state-lock | (None) |
+```
+
+Create markdown file with table of resources for a tfstate located in the file system in the directory:
+
+```bash
+➜ tflens --output markdown
+```
+
+View table of resources for a tfstate located in a S3 bucket called `tflens-test-tfstate-bucket`:
+
+```bash
+➜ tflens --file-location tflens-test-tfstate-bucket/common/terraform.tfstate --remote s3
 ```
