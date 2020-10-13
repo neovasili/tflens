@@ -5,8 +5,8 @@ import shutil
 import argparse
 import subprocess
 import urllib.request
-from zipfile import ZipFile
 from pathlib import Path
+from zipfile import ZipFile
 
 parser = argparse.ArgumentParser(description='Ask for user specific information')
 
@@ -119,6 +119,10 @@ def execute_command(command: str):
   return_code = process.returncode
   process.kill()
 
+  if return_code != 0:
+    print("ERROR executing the command: {}".format(command))
+    sys.exit(1)
+
   return return_code
 
 def main():
@@ -139,6 +143,7 @@ def main():
 
     os.chdir(CURRENT_DIR)
     execute_command("python3 tflens/__main__.py --file-location {}/terraform.tfstate".format(tf_binary_dir))
+
     print("==============================================")
 
 if __name__ == "__main__":
