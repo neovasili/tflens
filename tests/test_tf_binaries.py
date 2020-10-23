@@ -59,7 +59,8 @@ TF_SUPPORTED_VERSIONS = [
   '0.13.1',
   '0.13.2',
   '0.13.3',
-  '0.13.4'
+  '0.13.4',
+  '0.13.5'
 ]
 
 def clean_dir(zip_files_dir: str):
