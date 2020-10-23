@@ -5,6 +5,7 @@
 [![Pypi package](https://img.shields.io/static/v1.svg?label=Pypi&message=1.0.1&color=blue)](https://pypi.python.org/pypi/tflens/)
 ![coverage](https://img.shields.io/static/v1.svg?label=coverage&message=40%25&color=yellow)
 ![Supported versions check](https://codebuild.eu-west-1.amazonaws.com/badges?uuid=eyJlbmNyeXB0ZWREYXRhIjoiNjBlaXhCTElOdFB4a2xnVm9vNmQ3NzlnVFBaZjRlVFI4emdiSnhybVJqWXpxRlgwRTVqV1p0eTJwVXRhZkJFaHF4KytTVVZJcitEWmdpNjNqaGRsSGNzPSIsIml2UGFyYW1ldGVyU3BlYyI6ImdHZHl4S3RnMzJydDFZVjkiLCJtYXRlcmlhbFNldFNlcmlhbCI6MX0%3D&branch=master)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=neovasili_tflens&metric=alert_status)](https://sonarcloud.io/dashboard?id=neovasili_tflens)
 
 Terraform lens is a CLI tool that enables developers have a summarized view of tfstate resources.
 
