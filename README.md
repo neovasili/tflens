@@ -19,10 +19,13 @@ It will produce a table with the resources in a given terraform tfstate with the
 * module
 
 Example:
+
+```txt
 |   provider   |        type         |   mode  |           name                | module |
 |--------------|---------------------|---------|-------------------------------|--------|
 | provider.aws | aws_caller_identity |   data  |        current_user           |  test  |
-| provider.aws |  aws_dynamodb_table | managed | dynamodb-terraform-state-lock | (None) |
+| provider.aws |  aws_dynamodb_table | managed | dynamodb-terraform-state-lock |   -    |
+```
 
 ### Features
 
@@ -37,7 +40,7 @@ Regarding the produced output, there are three possibilities:
 The tool has been tested with tfstate files for the following terraform versions:
 
 * 0.12.0 - 0.12.29
-* 0.13.0 - 0.13.4
+* 0.13.0 - 0.13.5
 
 ## Install
 
@@ -70,6 +73,8 @@ optional arguments:
         If empty local is used.
         When remote is defined, you also need to specify --file-location with the tfstate location
         according to the following pattern: bucket-name/tfstate-key
+  -m FILTER_MODULE, --filter-module FILTER_MODULE
+        Applies a regular expression to the module field in order to filter the resources list to output
 ```
 
 ### Examples
@@ -82,7 +87,17 @@ View table of resources for a tfstate located in the file system in the director
 |   provider   |        type         |   mode  |           name                | module |
 |--------------|---------------------|---------|-------------------------------|--------|
 | provider.aws | aws_caller_identity |   data  |        current_user           |  test  |
-| provider.aws |  aws_dynamodb_table | managed | dynamodb-terraform-state-lock | (None) |
+| provider.aws |  aws_dynamodb_table | managed | dynamodb-terraform-state-lock |   -    |
+```
+
+View filtered table of resources for a tfstate located in the file system in the directory:
+
+```bash
+➜ tflens --filter-module "test"
+
+|   provider   |        type         |   mode  |           name                | module |
+|--------------|---------------------|---------|-------------------------------|--------|
+| provider.aws | aws_caller_identity |   data  |        current_user           |  test  |
 ```
 
 View table of resources for a tfstate located in the file system in the `dev/terraform.tfstate.json` path:
@@ -93,7 +108,7 @@ View table of resources for a tfstate located in the file system in the `dev/ter
 |   provider   |        type         |   mode  |           name                | module |
 |--------------|---------------------|---------|-------------------------------|--------|
 | provider.aws | aws_caller_identity |   data  |        current_user           |  test  |
-| provider.aws |  aws_dynamodb_table | managed | dynamodb-terraform-state-lock | (None) |
+| provider.aws |  aws_dynamodb_table | managed | dynamodb-terraform-state-lock |   -    |
 ```
 
 Create markdown file with table of resources for a tfstate located in the file system in the directory:

@@ -58,7 +58,7 @@ class TestTfStateResource(unittest.TestCase):
   def test_valid_non_module_resource(self):
     tfstate_resource = TfStateResource(self.valid_non_module_resource)
 
-    self.assertEqual(tfstate_resource.get_parent_module(), '(None)')
+    self.assertEqual(tfstate_resource.get_parent_module(), '-')
 
   def test_non_valid_resource(self):
     self.assertRaises(

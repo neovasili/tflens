@@ -35,11 +35,20 @@ parser.add_argument('-r', '--remote',
       according to the following pattern: bucket-name/tfstate-key",
   default="")
 
+parser.add_argument('-m', '--filter-module',
+  type=str,
+  action="store",
+  dest="filter_module",
+  help="Applies a regular expression to the module field in order to \
+    filter the resources list to output",
+  default="")
+
 args = parser.parse_args()
 
 ARGS_REMOTE = args.remote
 ARGS_FILE_LOCATION = args.file_location
 ARGS_OUTPUT = args.output
+ARGS_FILTER_MODULE = args.filter_module
 
 if not ARGS_FILE_LOCATION:
   ARGS_FILE_LOCATION = "{}/terraform.tfstate".format(Path().absolute())
@@ -50,7 +59,10 @@ def main():
     '': LocalTfStateController
   }
 
-  tfstate_controller = remote_router[ARGS_REMOTE](ARGS_FILE_LOCATION)
+  tfstate_controller = remote_router[ARGS_REMOTE](
+    file_location=ARGS_FILE_LOCATION,
+    module_filter_expression=ARGS_FILTER_MODULE
+  )
 
   output_router = {
     'markdown': tfstate_controller.create_markdown_file,

@@ -28,7 +28,7 @@ class TfStateResource():
     ]
 
   def get_parent_module(self):
-    return self.__module.split('.')[1] if self.__module else '(None)'
+    return self.__module.split('.')[1] if self.__module else '-'
 
   def get_instances_count(self):
     return len(self.__instances)
