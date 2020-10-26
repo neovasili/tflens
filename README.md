@@ -76,6 +76,8 @@ optional arguments:
         according to the following pattern: bucket-name/tfstate-key
   -m FILTER_MODULE, --filter-module FILTER_MODULE
         Applies a regular expression to the module field in order to filter the resources list to output
+  -n FILTER_NAME, --filter-name FILTER_NAME
+        Applies a regular expression to the name field in order to filter the resources list to output
 ```
 
 ### Examples
@@ -94,7 +96,27 @@ View table of resources for a tfstate located in the file system in the director
 View filtered table of resources for a tfstate located in the file system in the directory:
 
 ```bash
+➜ tflens --filter-name "current"
+
+|   provider   |        type         |   mode  |           name                | module |
+|--------------|---------------------|---------|-------------------------------|--------|
+| provider.aws | aws_caller_identity |   data  |        current_user           |  test  |
+```
+
+Or:
+
+```bash
 ➜ tflens --filter-module "test"
+
+|   provider   |        type         |   mode  |           name                | module |
+|--------------|---------------------|---------|-------------------------------|--------|
+| provider.aws | aws_caller_identity |   data  |        current_user           |  test  |
+```
+
+Or:
+
+```bash
+➜ tflens --filter-name "current" --filter-module "test"
 
 |   provider   |        type         |   mode  |           name                | module |
 |--------------|---------------------|---------|-------------------------------|--------|

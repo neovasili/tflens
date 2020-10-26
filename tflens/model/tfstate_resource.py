@@ -27,6 +27,9 @@ class TfStateResource():
       self.get_parent_module()
     ]
 
+  def get_name(self):
+    return self.__name
+
   def get_parent_module(self):
     return self.__module.split('.')[1] if self.__module else '-'
 

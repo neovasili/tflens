@@ -16,12 +16,26 @@ class ModuleFilterHelper(FilterHelper):
   def __init__(self, filter_expression: str, resource: TfStateResource):
     super().__init__(
       filter_expression=filter_expression,
-      object_attribute_value = resource.get_parent_module()
+      object_attribute_value=resource.get_parent_module()
+    )
+
+class NameFilterHelper(FilterHelper):
+
+  def __init__(self, filter_expression: str, resource: TfStateResource):
+    super().__init__(
+      filter_expression=filter_expression,
+      object_attribute_value=resource.get_name()
     )
 
 class TfStateFilterHelper():
 
-  def __init__(self, module_filter_expression: str=None, resources: list=None):
+  def __init__(
+    self,
+    name_filter_expression: str=None,
+    module_filter_expression: str=None,
+    resources: list=None
+  ):
+    self.__name_filter_expression = name_filter_expression
     self.__module_filter_expression = module_filter_expression
     self.__resources = resources
 
@@ -29,13 +43,18 @@ class TfStateFilterHelper():
     filtered_list = list()
 
     for resource in self.__resources or []:
+      pass_name_filter = True
       pass_module_filter = True
+
+      if self.__name_filter_expression:
+        filter_helper = NameFilterHelper(filter_expression=self.__name_filter_expression, resource=resource)
+        pass_name_filter = filter_helper.check_filter()
 
       if self.__module_filter_expression:
         filter_helper = ModuleFilterHelper(filter_expression=self.__module_filter_expression, resource=resource)
         pass_module_filter = filter_helper.check_filter()
 
-      if pass_module_filter:
+      if pass_module_filter and pass_name_filter:
         filtered_list.append(resource)
 
     return filtered_list
