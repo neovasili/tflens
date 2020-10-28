@@ -15,6 +15,7 @@ class TfStateController():
     self,
     tfstate_content: dict,
     name_filter_expression: str=None,
+    type_filter_expression: str=None,
     module_filter_expression: str=None
   ):
     self.__tfstate = TfState(
@@ -22,6 +23,7 @@ class TfStateController():
     )
     self.__resources = TfStateFilterHelper(
       name_filter_expression=name_filter_expression,
+      type_filter_expression=type_filter_expression,
       module_filter_expression=module_filter_expression,
       resources=self.__tfstate.get_resources()
     ).apply_filter()
@@ -53,6 +55,7 @@ class LocalTfStateController(TfStateController):
     self,
     file_location: str,
     module_filter_expression: str=None,
+    type_filter_expression: str=None,
     name_filter_expression: str=None
   ):
     self.__local_tfstate_service = LocalTfStateService(
@@ -62,6 +65,7 @@ class LocalTfStateController(TfStateController):
     super().__init__(
       tfstate_content=self.__local_tfstate_service.read_content(),
       name_filter_expression=name_filter_expression,
+      type_filter_expression=type_filter_expression,
       module_filter_expression=module_filter_expression
     )
 
@@ -71,6 +75,7 @@ class RemoteS3TfStateController(TfStateController):
     self,
     file_location: str,
     module_filter_expression: str=None,
+    type_filter_expression: str=None,
     name_filter_expression: str=None
   ):
     self.__remote_s3_tfstate_service = RemoteS3TfStateService(
@@ -80,5 +85,6 @@ class RemoteS3TfStateController(TfStateController):
     super().__init__(
       tfstate_content=self.__remote_s3_tfstate_service.read_content(),
       name_filter_expression=name_filter_expression,
+      type_filter_expression=type_filter_expression,
       module_filter_expression=module_filter_expression
     )
