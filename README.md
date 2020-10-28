@@ -80,6 +80,8 @@ optional arguments:
         Applies a regular expression to the name field in order to filter the resources list to output
   -t FILTER_TYPE, --filter-type FILTER_TYPE
         Applies a regular expression to the type field in order to filter the resources list to output
+  -p FILTER_PROVIDER, --filter-provider FILTER_PROVIDER
+        Applies a regular expression to the provider field in order to filter the resources list to output
 ```
 
 ### Examples

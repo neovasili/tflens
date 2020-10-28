@@ -59,6 +59,14 @@ parser.add_argument('-t', '--filter-type',
     filter the resources list to output",
   default="")
 
+parser.add_argument('-p', '--filter-provider',
+  type=str,
+  action="store",
+  dest="filter_provider",
+  help="Applies a regular expression to the provider field in order to \
+    filter the resources list to output",
+  default="")
+
 args = parser.parse_args()
 
 ARGS_REMOTE = args.remote
@@ -67,6 +75,7 @@ ARGS_OUTPUT = args.output
 ARGS_FILTER_MODULE = args.filter_module
 ARGS_FILTER_NAME = args.filter_name
 ARGS_FILTER_TYPE = args.filter_type
+ARGS_FILTER_PROVIDER = args.filter_provider
 
 if not ARGS_FILE_LOCATION:
   ARGS_FILE_LOCATION = "{}/terraform.tfstate".format(Path().absolute())
@@ -81,6 +90,7 @@ def main():
     file_location=ARGS_FILE_LOCATION,
     name_filter_expression=ARGS_FILTER_NAME,
     type_filter_expression=ARGS_FILTER_TYPE,
+    provider_filter_expression=ARGS_FILTER_PROVIDER,
     module_filter_expression=ARGS_FILTER_MODULE
   )
 

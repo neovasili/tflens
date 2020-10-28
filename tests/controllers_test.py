@@ -136,6 +136,28 @@ class TestLocalTfStateController(unittest.TestCase):
 
     self.assertEqual(captured_output.getvalue().replace('\n', ''), '')
 
+  def test_local_show_resources_matching_provider_filter(self):
+    local_tfstate_controller = LocalTfStateController(
+      file_location=self.existing_file,
+      provider_filter_expression="aws"
+    )
+    captured_output = io.StringIO()
+    sys.stdout = captured_output
+    local_tfstate_controller.show_resources()
+
+    self.assertEqual(captured_output.getvalue().replace('\n', ''), self.print_table_output)
+
+  def test_local_show_resources_not_matching_provider_filter(self):
+    local_tfstate_controller = LocalTfStateController(
+      file_location=self.existing_file,
+      provider_filter_expression="Aws"
+    )
+    captured_output = io.StringIO()
+    sys.stdout = captured_output
+    local_tfstate_controller.show_resources()
+
+    self.assertEqual(captured_output.getvalue().replace('\n', ''), '')
+
   def test_local_create_markdown_file(self):
     local_tfstate_controller = LocalTfStateController(self.existing_file)
     local_tfstate_controller.create_markdown_file()
