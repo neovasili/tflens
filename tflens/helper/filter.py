@@ -35,17 +35,27 @@ class TypeFilterHelper(FilterHelper):
       object_attribute_value=resource.get_type()
     )
 
+class ProviderFilterHelper(FilterHelper):
+
+  def __init__(self, filter_expression: str, resource: TfStateResource):
+    super().__init__(
+      filter_expression=filter_expression,
+      object_attribute_value=resource.get_type()
+    )
+
 class TfStateFilterHelper():
 
   def __init__(
     self,
     name_filter_expression: str=None,
     type_filter_expression: str=None,
+    provider_filter_expression: str=None,
     module_filter_expression: str=None,
     resources: list=None
   ):
     self.__name_filter_expression = name_filter_expression
     self.__type_filter_expression = type_filter_expression
+    self.__provider_filter_expression = provider_filter_expression
     self.__module_filter_expression = module_filter_expression
     self.__resources = resources
 
@@ -56,6 +66,7 @@ class TfStateFilterHelper():
       pass_name_filter = True
       pass_module_filter = True
       pass_type_filter = True
+      pass_provider_filter = True
 
       if self.__name_filter_expression:
         filter_helper = NameFilterHelper(filter_expression=self.__name_filter_expression, resource=resource)
@@ -65,11 +76,15 @@ class TfStateFilterHelper():
         filter_helper = TypeFilterHelper(filter_expression=self.__type_filter_expression, resource=resource)
         pass_type_filter = filter_helper.check_filter()
 
+      if self.__provider_filter_expression:
+        filter_helper = ProviderFilterHelper(filter_expression=self.__provider_filter_expression, resource=resource)
+        pass_provider_filter = filter_helper.check_filter()
+
       if self.__module_filter_expression:
         filter_helper = ModuleFilterHelper(filter_expression=self.__module_filter_expression, resource=resource)
         pass_module_filter = filter_helper.check_filter()
 
-      if pass_module_filter and pass_name_filter and pass_type_filter:
+      if pass_module_filter and pass_name_filter and pass_type_filter and pass_provider_filter:
         filtered_list.append(resource)
 
     return filtered_list
