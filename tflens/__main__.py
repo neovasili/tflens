@@ -51,6 +51,14 @@ parser.add_argument('-n', '--filter-name',
     filter the resources list to output",
   default="")
 
+parser.add_argument('-t', '--filter-type',
+  type=str,
+  action="store",
+  dest="filter_type",
+  help="Applies a regular expression to the type field in order to \
+    filter the resources list to output",
+  default="")
+
 args = parser.parse_args()
 
 ARGS_REMOTE = args.remote
@@ -58,6 +66,7 @@ ARGS_FILE_LOCATION = args.file_location
 ARGS_OUTPUT = args.output
 ARGS_FILTER_MODULE = args.filter_module
 ARGS_FILTER_NAME = args.filter_name
+ARGS_FILTER_TYPE = args.filter_type
 
 if not ARGS_FILE_LOCATION:
   ARGS_FILE_LOCATION = "{}/terraform.tfstate".format(Path().absolute())
@@ -71,6 +80,7 @@ def main():
   tfstate_controller = remote_router[ARGS_REMOTE](
     file_location=ARGS_FILE_LOCATION,
     name_filter_expression=ARGS_FILTER_NAME,
+    type_filter_expression=ARGS_FILTER_TYPE,
     module_filter_expression=ARGS_FILTER_MODULE
   )
 
