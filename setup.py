@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
   name="tflens",
-  version="1.0.1",
+  version="1.2.0",
   author="Juan Manuel Ruiz Fernández",
   description="Terraform state viewer",
   keywords="terraform viewer state tfstate cli",
