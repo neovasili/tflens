@@ -9,7 +9,9 @@ class FilterHelper():
     self.__object_attribute_value = object_attribute_value
 
   def check_filter(self):
-    return re.match(self.__filter_expression, self.__object_attribute_value)
+    compiled_pattern = re.compile(self.__filter_expression)
+
+    return compiled_pattern.search(self.__object_attribute_value)
 
 class ModuleFilterHelper(FilterHelper):
 
@@ -40,7 +42,15 @@ class ProviderFilterHelper(FilterHelper):
   def __init__(self, filter_expression: str, resource: TfStateResource):
     super().__init__(
       filter_expression=filter_expression,
-      object_attribute_value=resource.get_type()
+      object_attribute_value=resource.get_provider()
+    )
+
+class ModeFilterHelper(FilterHelper):
+
+  def __init__(self, filter_expression: str, resource: TfStateResource):
+    super().__init__(
+      filter_expression=filter_expression,
+      object_attribute_value=resource.get_mode()
     )
 
 class TfStateFilterHelper():
@@ -51,12 +61,14 @@ class TfStateFilterHelper():
     type_filter_expression: str=None,
     provider_filter_expression: str=None,
     module_filter_expression: str=None,
+    mode_filter_expression: str=None,
     resources: list=None
   ):
     self.__name_filter_expression = name_filter_expression
     self.__type_filter_expression = type_filter_expression
     self.__provider_filter_expression = provider_filter_expression
     self.__module_filter_expression = module_filter_expression
+    self.__mode_filter_expression = mode_filter_expression
     self.__resources = resources
 
   def apply_filter(self):
@@ -67,6 +79,7 @@ class TfStateFilterHelper():
       pass_module_filter = True
       pass_type_filter = True
       pass_provider_filter = True
+      pass_mode_filter = True
 
       if self.__name_filter_expression:
         filter_helper = NameFilterHelper(filter_expression=self.__name_filter_expression, resource=resource)
@@ -84,7 +97,11 @@ class TfStateFilterHelper():
         filter_helper = ModuleFilterHelper(filter_expression=self.__module_filter_expression, resource=resource)
         pass_module_filter = filter_helper.check_filter()
 
-      if pass_module_filter and pass_name_filter and pass_type_filter and pass_provider_filter:
+      if self.__mode_filter_expression:
+        filter_helper = ModeFilterHelper(filter_expression=self.__mode_filter_expression, resource=resource)
+        pass_mode_filter = filter_helper.check_filter()
+
+      if pass_module_filter and pass_name_filter and pass_type_filter and pass_provider_filter and pass_mode_filter:
         filtered_list.append(resource)
 
     return filtered_list

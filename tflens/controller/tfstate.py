@@ -17,7 +17,8 @@ class TfStateController():
     name_filter_expression: str=None,
     type_filter_expression: str=None,
     provider_filter_expression: str=None,
-    module_filter_expression: str=None
+    module_filter_expression: str=None,
+    mode_filter_expression: str=None
   ):
     self.__tfstate = TfState(
       content=tfstate_content
@@ -27,6 +28,7 @@ class TfStateController():
       type_filter_expression=type_filter_expression,
       provider_filter_expression=provider_filter_expression,
       module_filter_expression=module_filter_expression,
+      mode_filter_expression=mode_filter_expression,
       resources=self.__tfstate.get_resources()
     ).apply_filter()
 
@@ -59,7 +61,8 @@ class LocalTfStateController(TfStateController):
     module_filter_expression: str=None,
     type_filter_expression: str=None,
     provider_filter_expression: str=None,
-    name_filter_expression: str=None
+    name_filter_expression: str=None,
+    mode_filter_expression: str=None
   ):
     self.__local_tfstate_service = LocalTfStateService(
       file_location=file_location
@@ -70,7 +73,8 @@ class LocalTfStateController(TfStateController):
       name_filter_expression=name_filter_expression,
       type_filter_expression=type_filter_expression,
       provider_filter_expression=provider_filter_expression,
-      module_filter_expression=module_filter_expression
+      module_filter_expression=module_filter_expression,
+      mode_filter_expression=mode_filter_expression
     )
 
 class RemoteS3TfStateController(TfStateController):
@@ -81,7 +85,8 @@ class RemoteS3TfStateController(TfStateController):
     module_filter_expression: str=None,
     type_filter_expression: str=None,
     provider_filter_expression: str=None,
-    name_filter_expression: str=None
+    name_filter_expression: str=None,
+    mode_filter_expression: str=None
   ):
     self.__remote_s3_tfstate_service = RemoteS3TfStateService(
       file_location=file_location
@@ -92,5 +97,6 @@ class RemoteS3TfStateController(TfStateController):
       name_filter_expression=name_filter_expression,
       type_filter_expression=type_filter_expression,
       provider_filter_expression=provider_filter_expression,
-      module_filter_expression=module_filter_expression
+      module_filter_expression=module_filter_expression,
+      mode_filter_expression=mode_filter_expression
     )

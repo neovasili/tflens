@@ -158,6 +158,58 @@ class TestLocalTfStateController(unittest.TestCase):
 
     self.assertEqual(captured_output.getvalue().replace('\n', ''), '')
 
+  def test_local_show_resources_matching_mode_filter(self):
+    local_tfstate_controller = LocalTfStateController(
+      file_location=self.existing_file,
+      mode_filter_expression="data"
+    )
+    captured_output = io.StringIO()
+    sys.stdout = captured_output
+    local_tfstate_controller.show_resources()
+
+    self.assertEqual(captured_output.getvalue().replace('\n', ''), self.print_table_output)
+
+  def test_local_show_resources_not_matching_mode_filter(self):
+    local_tfstate_controller = LocalTfStateController(
+      file_location=self.existing_file,
+      mode_filter_expression="Data"
+    )
+    captured_output = io.StringIO()
+    sys.stdout = captured_output
+    local_tfstate_controller.show_resources()
+
+    self.assertEqual(captured_output.getvalue().replace('\n', ''), '')
+
+  def test_local_show_resources_matching_mixed_filter(self):
+    local_tfstate_controller = LocalTfStateController(
+      file_location=self.existing_file,
+      module_filter_expression="test",
+      name_filter_expression="current_user",
+      type_filter_expression="aws_caller_identity",
+      provider_filter_expression="aws",
+      mode_filter_expression="data"
+    )
+    captured_output = io.StringIO()
+    sys.stdout = captured_output
+    local_tfstate_controller.show_resources()
+
+    self.assertEqual(captured_output.getvalue().replace('\n', ''), self.print_table_output)
+
+  def test_local_show_resources_not_matching_mixed_filter(self):
+    local_tfstate_controller = LocalTfStateController(
+      file_location=self.existing_file,
+      module_filter_expression="test",
+      name_filter_expression="current_user",
+      type_filter_expression="aws_caller_identity",
+      provider_filter_expression="aws",
+      mode_filter_expression="Data"
+    )
+    captured_output = io.StringIO()
+    sys.stdout = captured_output
+    local_tfstate_controller.show_resources()
+
+    self.assertEqual(captured_output.getvalue().replace('\n', ''), '')
+
   def test_local_create_markdown_file(self):
     local_tfstate_controller = LocalTfStateController(self.existing_file)
     local_tfstate_controller.create_markdown_file()
