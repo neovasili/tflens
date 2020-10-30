@@ -33,6 +33,12 @@ class TfStateResource():
   def get_type(self):
     return self.__type
 
+  def get_provider(self):
+    return self.__provider
+
+  def get_mode(self):
+    return self.__mode
+
   def get_parent_module(self):
     return self.__module.split('.')[1] if self.__module else '-'
 
