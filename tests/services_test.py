@@ -1,5 +1,6 @@
 import json
 import unittest
+import requests_mock
 import boto3
 
 from moto import mock_s3
@@ -9,6 +10,7 @@ from tests_config import (
 )
 from tflens.service.tfstate import (
   RemoteS3TfStateService,
+  RemoteHttpTfStateService,
   LocalTfStateService
 )
 from tflens.exception.exception import (
@@ -53,6 +55,37 @@ class TestRemoteS3TfStateService(unittest.TestCase):
     self.assertRaises(
       CannotLoadRemoteFile,
       remote_s3_tfstate_service.read_content
+    )
+
+class TestRemoteHttpTfStateService(unittest.TestCase):
+
+  @requests_mock.mock()
+  def setUp(self, mock):
+    self.valid_tfstate_file = "http://valid_tfstate_file"
+    self.non_existing_tfstate_file = "http://non_existing_tfstate_file"
+    self.user = "user"
+    self.password = "password"
+
+    mock.get(
+      self.valid_tfstate_file,
+      json=VALID_TFSTATE_CONTENT_WITH_RESOURCES
+    )
+
+    mock.get(
+      self.non_existing_tfstate_file,
+      json=""
+    )
+    self.remote_http_tfstate_service = RemoteHttpTfStateService(self.valid_tfstate_file, self.user, self.password)
+    self.valid_content = self.remote_http_tfstate_service.read_content()
+
+  def test_read_content_remote_http_file(self):
+    self.assertIsInstance(self.valid_content, dict)
+
+  def test_cannot_load_content_remote_http_file(self):
+    remote_http_tfstate_service = RemoteHttpTfStateService(self.non_existing_tfstate_file)
+    self.assertRaises(
+      CannotLoadRemoteFile,
+      remote_http_tfstate_service.read_content
     )
 
 class TestLocalTfStateService(unittest.TestCase):
