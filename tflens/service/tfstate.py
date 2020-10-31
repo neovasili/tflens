@@ -66,7 +66,7 @@ class RemoteHttpTfStateService():
     except ClientError:
       raise CannotLoadRemoteFile
 
-    except ConnectionError:
+    except requests.exceptions.ConnectionError:
       raise CannotLoadRemoteFile
 
 class LocalTfStateService():

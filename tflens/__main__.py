@@ -1,7 +1,7 @@
 from pathlib import Path
 import argparse
-import pkg_resources
 
+from tflens.helper.config import VERSION
 from tflens.controller.tfstate import (
   RemoteS3TfStateController,
   RemoteHttpTfStateController,
@@ -94,7 +94,7 @@ parser.add_argument('-w', '--http-password',
 parser.add_argument('-v', '--version',
   action='version',
   help="Show program version",
-  version=pkg_resources.require("tflens")[0].version)
+  version=VERSION)
 
 args = parser.parse_args()
 
