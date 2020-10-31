@@ -70,8 +70,8 @@ class LocalTfStateController(TfStateController):
     self.__local_tfstate_service = LocalTfStateService(
       file_location=file_location
     )
-    str(user)
-    str(password)
+    user = str(user)
+    password = str(password)
 
     super().__init__(
       tfstate_content=self.__local_tfstate_service.read_content(),
@@ -98,8 +98,8 @@ class RemoteS3TfStateController(TfStateController):
     self.__remote_s3_tfstate_service = RemoteS3TfStateService(
       file_location=file_location
     )
-    str(user)
-    str(password)
+    user = str(user)
+    password = str(password)
 
     super().__init__(
       tfstate_content=self.__remote_s3_tfstate_service.read_content(),
