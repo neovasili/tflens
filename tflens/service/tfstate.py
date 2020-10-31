@@ -2,13 +2,17 @@ import json
 from json.decoder import JSONDecodeError
 import pathlib
 import boto3
+import requests
 
 from botocore.exceptions import ClientError
 
 from tflens.exception.exception import (
   CannotLoadLocalFile,
   CannotReadLocalFile,
-  CannotLoadRemoteFile
+  CannotLoadRemoteFile,
+  UnauthorizedAccess,
+  Forbidden,
+  ServerUnavailable
 )
 
 class RemoteS3TfStateService():
@@ -24,11 +28,45 @@ class RemoteS3TfStateService():
         Bucket=self.__bucket_name,
         Key=self.__file_s3_key
       )
-      print(response)
 
       return json.loads(response['Body'].read())
 
     except ClientError:
+      raise CannotLoadRemoteFile
+
+class RemoteHttpTfStateService():
+
+  def __init__(self, file_location: str, user: str=None, password: str=None):
+    self.__file_location = file_location
+    self.__user = user
+    self.__password = password
+
+  def read_content(self):
+    try:
+      response = requests.get(
+        self.__file_location,
+        auth=(self.__user, self.__password),
+        timeout=(5, 30)
+      )
+
+      if response.status_code == 401:
+        raise UnauthorizedAccess
+
+      if response.status_code == 403:
+        raise Forbidden
+
+      if response.status_code == 404:
+        raise CannotLoadRemoteFile
+
+      if response.status_code >= 500:
+        raise ServerUnavailable
+
+      return json.loads(response.content)
+
+    except ClientError:
+      raise CannotLoadRemoteFile
+
+    except requests.exceptions.ConnectionError:
       raise CannotLoadRemoteFile
 
 class LocalTfStateService():

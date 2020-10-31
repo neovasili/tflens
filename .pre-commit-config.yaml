@@ -61,3 +61,4 @@ repos:
           - -d missing-module-docstring
           - -d missing-class-docstring
           - -d missing-function-docstring
+          - -d arguments-differ

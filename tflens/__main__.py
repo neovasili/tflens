@@ -1,8 +1,10 @@
-import argparse
 from pathlib import Path
+import argparse
 
+from tflens.helper.config import VERSION
 from tflens.controller.tfstate import (
   RemoteS3TfStateController,
+  RemoteHttpTfStateController,
   LocalTfStateController
 )
 
@@ -30,7 +32,7 @@ parser.add_argument('-r', '--remote',
   type=str,
   action="store",
   dest="remote",
-  help="Defines if remote (s3) or local tfstate file. If empty local is used. \
+  help="Defines if remote (s3|http) or local tfstate file. If empty local is used. \
     When remote is defined, you also need to specify --file-location with the tfstate location \
       according to the following pattern: bucket-name/tfstate-key",
   default="")
@@ -75,6 +77,25 @@ parser.add_argument('-d', '--filter-mode',
     filter the resources list to output",
   default="")
 
+parser.add_argument('-u', '--http-user',
+  type=str,
+  action="store",
+  dest="http_user",
+  help="User for http remote backend basic auth",
+  default="")
+
+parser.add_argument('-w', '--http-password',
+  type=str,
+  action="store",
+  dest="http_password",
+  help="Password for http remote backend basic auth",
+  default="")
+
+parser.add_argument('-v', '--version',
+  action='version',
+  help="Show program version",
+  version=VERSION)
+
 args = parser.parse_args()
 
 ARGS_REMOTE = args.remote
@@ -85,6 +106,8 @@ ARGS_FILTER_NAME = args.filter_name
 ARGS_FILTER_TYPE = args.filter_type
 ARGS_FILTER_PROVIDER = args.filter_provider
 ARGS_FILER_MODE = args.filter_mode
+ARGS_HTTP_USER = args.http_user if args.http_user else None
+ARGS_HTTP_PASSWORD = args.http_password if args.http_password else None
 
 if not ARGS_FILE_LOCATION:
   ARGS_FILE_LOCATION = "{}/terraform.tfstate".format(Path().absolute())
@@ -92,11 +115,14 @@ if not ARGS_FILE_LOCATION:
 def main():
   remote_router = {
     's3': RemoteS3TfStateController,
+    'http': RemoteHttpTfStateController,
     '': LocalTfStateController
   }
 
   tfstate_controller = remote_router[ARGS_REMOTE](
     file_location=ARGS_FILE_LOCATION,
+    user=ARGS_HTTP_USER,
+    password=ARGS_HTTP_PASSWORD,
     name_filter_expression=ARGS_FILTER_NAME,
     type_filter_expression=ARGS_FILTER_TYPE,
     provider_filter_expression=ARGS_FILTER_PROVIDER,

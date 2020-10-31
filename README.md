@@ -2,7 +2,7 @@
 
 [![pre-commit](https://github.com/neovasili/tflens/workflows/pre-commit/badge.svg)](https://github.com/neovasili/tflens)
 [![unit-tests](https://github.com/neovasili/tflens/workflows/unit-tests/badge.svg)](https://github.com/neovasili/tflens)
-[![Pypi package](https://img.shields.io/static/v1.svg?label=Pypi&message=1.1.0&color=blue)](https://pypi.python.org/pypi/tflens/)
+[![Pypi package](https://img.shields.io/static/v1.svg?label=Pypi&message=1.3.0&color=blue)](https://pypi.python.org/pypi/tflens/)
 ![coverage](https://img.shields.io/static/v1.svg?label=coverage&message=40%25&color=yellow)
 ![Supported versions check](https://codebuild.eu-west-1.amazonaws.com/badges?uuid=eyJlbmNyeXB0ZWREYXRhIjoiNjBlaXhCTElOdFB4a2xnVm9vNmQ3NzlnVFBaZjRlVFI4emdiSnhybVJqWXpxRlgwRTVqV1p0eTJwVXRhZkJFaHF4KytTVVZJcitEWmdpNjNqaGRsSGNzPSIsIml2UGFyYW1ldGVyU3BlYyI6ImdHZHl4S3RnMzJydDFZVjkiLCJtYXRlcmlhbFNldFNlcmlhbCI6MX0%3D&branch=master)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=neovasili_tflens&metric=alert_status)](https://sonarcloud.io/dashboard?id=neovasili_tflens)
@@ -56,7 +56,7 @@ pip install tflens
 ```bash
 ➜ tflens --help
 
-usage: tflens [-h] [-f FILE_LOCATION] [-o OUTPUT] [-r REMOTE]
+usage: tflens [-h] [-f FILE_LOCATION] [-o OUTPUT] [-r REMOTE] [-m FILTER_MODULE] [-n FILTER_NAME] [-t FILTER_TYPE] [-p FILTER_PROVIDER] [-d FILTER_MODE] [-u HTTP_USER] [-w HTTP_PASSWORD] [-v]
 
 Terraform lens is a CLI tool that enables developers have a summarized view of tfstate resources.
 
@@ -70,7 +70,7 @@ optional arguments:
         Defines output type (markdown|html).
         If empty outputs in terminal
   -r REMOTE, --remote REMOTE
-        Defines if remote (s3) or local tfstate file.
+        Defines if remote (s3|http) or local tfstate file.
         If empty local is used.
         When remote is defined, you also need to specify --file-location with the tfstate location
         according to the following pattern: bucket-name/tfstate-key
@@ -84,6 +84,12 @@ optional arguments:
         Applies a regular expression to the provider field in order to filter the resources list to output
   -d FILTER_MODE, --filter-mode FILTER_MODE
         Applies a regular expression to the mode field in order to filter the resources list to output
+  -u HTTP_USER, --http-user HTTP_USER
+        User for http remote backend basic auth
+  -w HTTP_PASSWORD, --http-password HTTP_PASSWORD
+        Password for http remote backend basic auth
+  -v, --version
+        Show program version
 ```
 
 ### Examples

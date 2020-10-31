@@ -1,11 +1,12 @@
 import setuptools
+from tflens.helper.config import VERSION
 
 with open("README.md", "r") as fh:
   long_description = fh.read()
 
 setuptools.setup(
   name="tflens",
-  version="1.2.0",
+  version=VERSION,
   author="Juan Manuel Ruiz Fernández",
   description="Terraform state viewer",
   keywords="terraform viewer state tfstate cli",

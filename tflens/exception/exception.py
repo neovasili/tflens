@@ -21,3 +21,18 @@ class CannotLoadRemoteFile(CustomException):
 
   def __init__(self):
     super().__init__("Cannot load remote tfstate")
+
+class UnauthorizedAccess(CustomException):
+
+  def __init__(self):
+    super().__init__("Unauthorized access, check your auth credentials")
+
+class Forbidden(CustomException):
+
+  def __init__(self):
+    super().__init__("Forbidden, your user does not have sufficient permissions")
+
+class ServerUnavailable(CustomException):
+
+  def __init__(self):
+    super().__init__("The server is unavailable")
