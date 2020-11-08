@@ -36,3 +36,13 @@ class ServerUnavailable(CustomException):
 
   def __init__(self):
     super().__init__("The server is unavailable")
+
+class NotValidS3Location(CustomException):
+
+  def __init__(self):
+    super().__init__("Invalid S3 location. Must be something like 's3://bucket_name/key'")
+
+class NotValidHttpLocation(CustomException):
+
+  def __init__(self):
+    super().__init__("Invalid Http location. Must be something like 'http(s)://http_server/'")

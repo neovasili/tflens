@@ -6,21 +6,35 @@ import requests
 
 from botocore.exceptions import ClientError
 
+from tflens.helper.location import (
+  S3LocationHelper,
+  HttpLocationHelper
+)
 from tflens.exception.exception import (
   CannotLoadLocalFile,
   CannotReadLocalFile,
   CannotLoadRemoteFile,
   UnauthorizedAccess,
   Forbidden,
-  ServerUnavailable
+  ServerUnavailable,
+  NotValidS3Location,
+  NotValidHttpLocation
 )
 
 class RemoteS3TfStateService():
 
   def __init__(self, file_location: str):
-    self.__s3_client = boto3.client('s3')
-    self.__bucket_name = file_location.split('/')[0]
-    self.__file_s3_key = "/".join(file_location.split('/')[1:])
+    location_helper = S3LocationHelper(file_location=file_location)
+
+    if location_helper.validate():
+      location_without_schema = file_location.split(":")[1].replace("//", "")
+
+      self.__s3_client = boto3.client('s3')
+      self.__bucket_name = location_without_schema.split('/')[0]
+      self.__file_s3_key = "/".join(location_without_schema.split('/')[1:])
+
+    else:
+      raise NotValidS3Location
 
   def read_content(self):
     try:
@@ -37,9 +51,15 @@ class RemoteS3TfStateService():
 class RemoteHttpTfStateService():
 
   def __init__(self, file_location: str, user: str=None, password: str=None):
-    self.__file_location = file_location
-    self.__user = user
-    self.__password = password
+    location_helper = HttpLocationHelper(file_location=file_location)
+
+    if location_helper.validate():
+      self.__file_location = file_location
+      self.__user = user
+      self.__password = password
+
+    else:
+      raise NotValidHttpLocation
 
   def read_content(self):
     try:

@@ -16,7 +16,9 @@ from tflens.service.tfstate import (
 from tflens.exception.exception import (
   CannotLoadLocalFile,
   CannotReadLocalFile,
-  CannotLoadRemoteFile
+  CannotLoadRemoteFile,
+  NotValidS3Location,
+  NotValidHttpLocation
 )
 
 @mock_s3
@@ -27,8 +29,9 @@ class TestRemoteS3TfStateService(unittest.TestCase):
     self.valid_content_key = 'tflens/terraform.tfstate'
     self.non_valid_key = 'none'
 
-    self.valid_tfstate_file = "{}/{}".format(self.bucket, self.valid_content_key)
-    self.non_existing_tfstate_file = "{}/{}".format(self.bucket, self.non_valid_key)
+    self.valid_tfstate_file = "s3://{}/{}".format(self.bucket, self.valid_content_key)
+    self.non_existing_tfstate_file = "s3://{}/{}".format(self.bucket, self.non_valid_key)
+    self.non_valid_tfstate_location = "s3:/{}/{}".format(self.bucket, self.valid_content_key)
 
     with mock_s3():
       s3 = boto3.client("s3")
@@ -57,12 +60,20 @@ class TestRemoteS3TfStateService(unittest.TestCase):
       remote_s3_tfstate_service.read_content
     )
 
+  def test_non_valid_remote_s3_file_location(self):
+    self.assertRaises(
+      NotValidS3Location,
+      RemoteS3TfStateService,
+      self.non_valid_tfstate_location
+    )
+
 class TestRemoteHttpTfStateService(unittest.TestCase):
 
   @requests_mock.mock()
   def setUp(self, mock):
     self.valid_tfstate_file = "http://valid_tfstate_file"
     self.non_existing_tfstate_file = "http://non_existing_tfstate_file"
+    self.non_valid_tfstate_location = "http:/non_existing_tfstate_file"
     self.user = "user"
     self.password = "password"
 
@@ -86,6 +97,13 @@ class TestRemoteHttpTfStateService(unittest.TestCase):
     self.assertRaises(
       CannotLoadRemoteFile,
       remote_http_tfstate_service.read_content
+    )
+
+  def test_non_valid_remote_http_file_location(self):
+    self.assertRaises(
+      NotValidHttpLocation,
+      RemoteHttpTfStateService,
+      self.non_valid_tfstate_location
     )
 
 class TestLocalTfStateService(unittest.TestCase):

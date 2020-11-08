@@ -18,6 +18,11 @@ from tflens.helper.table import (
   MarkdownTableHelper,
   HtmlTableHelper
 )
+from tflens.helper.remote import RemoteHelper
+from tflens.helper.location import (
+  S3LocationHelper,
+  HttpLocationHelper
+)
 
 class TestTableHelper(unittest.TestCase):
 
@@ -108,3 +113,83 @@ class TestHtmlTableHelper(unittest.TestCase):
       html_file_content = html_file.read()
 
     self.assertEqual(html_file_content.replace('\n', ''), self.file_htmltable_output.replace('\n', ''))
+
+class TestRemoteHelper(unittest.TestCase):
+
+  def setUp(self):
+    self.local_file_location = 'local/terraform.tfstate'
+    self.s3_file_location = 's3://local/terraform.tfstate'
+    self.http_file_location = 'http://local/terraform.tfstate'
+    self.https_file_location = 'https://local/terraform.tfstate'
+
+  def test_invoke_local_remote_controller(self):
+    remote_helper = RemoteHelper(self.local_file_location)
+
+    self.assertEqual(
+      remote_helper.get_remote_type(),
+      "local"
+    )
+
+  def test_invoke_s3_remote_controller(self):
+    remote_helper = RemoteHelper(self.s3_file_location)
+
+    self.assertEqual(
+      remote_helper.get_remote_type(),
+      "s3"
+    )
+
+  def test_invoke_http_remote_controller(self):
+    remote_helper = RemoteHelper(self.http_file_location)
+
+    self.assertEqual(
+      remote_helper.get_remote_type(),
+      "http"
+    )
+
+  def test_invoke_https_remote_controller(self):
+    remote_helper = RemoteHelper(self.https_file_location)
+
+    self.assertEqual(
+      remote_helper.get_remote_type(),
+      "https"
+    )
+
+class TestLocationHelper(unittest.TestCase):
+
+  def setUp(self):
+    self.s3_file_location = 's3://local/terraform.tfstate'
+    self.non_valid_s3_file_location = 's3:/local/terraform.tfstate'
+    self.http_file_location = 'http://local/terraform.tfstate'
+    self.non_valid_http_file_location = 'http:/local/terraform.tfstate'
+    self.https_file_location = 'https://local/terraform.tfstate'
+    self.non_valid_https_file_location = 'https:/local/terraform.tfstate'
+
+  def test_valid_s3_remote_location(self):
+    location_helper = S3LocationHelper(self.s3_file_location)
+
+    self.assertTrue(location_helper.validate())
+
+  def test_non_valid_s3_remote_location(self):
+    location_helper = S3LocationHelper(self.non_valid_s3_file_location)
+
+    self.assertFalse(location_helper.validate())
+
+  def test_valid_http_remote_location(self):
+    location_helper = HttpLocationHelper(self.http_file_location)
+
+    self.assertTrue(location_helper.validate())
+
+  def test_non_valid_http_remote_location(self):
+    location_helper = HttpLocationHelper(self.non_valid_http_file_location)
+
+    self.assertFalse(location_helper.validate())
+
+  def test_valid_https_remote_location(self):
+    location_helper = HttpLocationHelper(self.https_file_location)
+
+    self.assertTrue(location_helper.validate())
+
+  def test_non_valid_https_remote_location(self):
+    location_helper = HttpLocationHelper(self.non_valid_https_file_location)
+
+    self.assertFalse(location_helper.validate())
