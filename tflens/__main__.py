@@ -2,11 +2,7 @@ from pathlib import Path
 import argparse
 
 from tflens.helper.config import VERSION
-from tflens.controller.tfstate import (
-  RemoteS3TfStateController,
-  RemoteHttpTfStateController,
-  LocalTfStateController
-)
+from tflens.helper.remote import RemoteHelper
 
 parser = argparse.ArgumentParser(
   description='Terraform lens is a CLI tool that enables developers have a summarized view of tfstate resources.'
@@ -26,15 +22,6 @@ parser.add_argument('-o', '--output',
   action="store",
   dest="output",
   help="Defines output type (markdown|html). If empty outputs in terminal",
-  default="")
-
-parser.add_argument('-r', '--remote',
-  type=str,
-  action="store",
-  dest="remote",
-  help="Defines if remote (s3|http) or local tfstate file. If empty local is used. \
-    When remote is defined, you also need to specify --file-location with the tfstate location \
-      according to the following pattern: bucket-name/tfstate-key",
   default="")
 
 parser.add_argument('-m', '--filter-module',
@@ -98,7 +85,6 @@ parser.add_argument('-v', '--version',
 
 args = parser.parse_args()
 
-ARGS_REMOTE = args.remote
 ARGS_FILE_LOCATION = args.file_location
 ARGS_OUTPUT = args.output
 ARGS_FILTER_MODULE = args.filter_module
@@ -113,13 +99,9 @@ if not ARGS_FILE_LOCATION:
   ARGS_FILE_LOCATION = "{}/terraform.tfstate".format(Path().absolute())
 
 def main():
-  remote_router = {
-    's3': RemoteS3TfStateController,
-    'http': RemoteHttpTfStateController,
-    '': LocalTfStateController
-  }
+  remote_helper = RemoteHelper(ARGS_FILE_LOCATION)
 
-  tfstate_controller = remote_router[ARGS_REMOTE](
+  tfstate_controller = remote_helper.invoke_remote_controller(
     file_location=ARGS_FILE_LOCATION,
     user=ARGS_HTTP_USER,
     password=ARGS_HTTP_PASSWORD,
