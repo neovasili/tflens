@@ -8,17 +8,13 @@ on:
 
 jobs:
   unit-tests:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-python@v2
         with:
           python-version: '3.8'
-      - name: Setup virtual environment
-        run: python3 -m venv .env
       - name: Install dependencies
         run: pip3 install -r requirements.txt
-      - name: Setup virtual environment
-        run: source .env/bin/activate
       - name: Execute unit tests
         run: python3 -m unittest discover -s tests -p "*_test.py" -v
