@@ -21,10 +21,13 @@ from tflens.exception.exception import (
   NotValidHttpLocation
 )
 
-@mock_s3
+
 class TestRemoteS3TfStateService(unittest.TestCase):
 
   def setUp(self):
+    self.mock = mock_s3()
+    self.mock.start()
+
     self.bucket = 'tflens-test-bucket'
     self.valid_content_key = 'tflens/terraform.tfstate'
     self.non_valid_key = 'none'
@@ -33,19 +36,18 @@ class TestRemoteS3TfStateService(unittest.TestCase):
     self.non_existing_tfstate_file = "s3://{}/{}".format(self.bucket, self.non_valid_key)
     self.non_valid_tfstate_location = "s3:/{}/{}".format(self.bucket, self.valid_content_key)
 
-    with mock_s3():
-      s3 = boto3.client("s3")
-      s3.create_bucket(
-        Bucket=self.bucket,
-        CreateBucketConfiguration={
-          'LocationConstraint': 'eu-west-1'
-        }
-      )
-      s3.put_object(
-        Bucket=self.bucket,
-        Key=self.valid_content_key,
-        Body=json.dumps(VALID_TFSTATE_CONTENT_WITH_RESOURCES)
-      )
+    s3 = boto3.client("s3")
+    s3.create_bucket(
+      Bucket=self.bucket,
+      CreateBucketConfiguration={
+        'LocationConstraint': 'eu-west-1'
+      }
+    )
+    s3.put_object(
+      Bucket=self.bucket,
+      Key=self.valid_content_key,
+      Body=json.dumps(VALID_TFSTATE_CONTENT_WITH_RESOURCES)
+    )
 
   def test_read_content_remote_s3_file(self):
     remote_s3_tfstate_service = RemoteS3TfStateService(self.valid_tfstate_file)
@@ -66,6 +68,10 @@ class TestRemoteS3TfStateService(unittest.TestCase):
       RemoteS3TfStateService,
       self.non_valid_tfstate_location
     )
+
+  def tearDown(self):
+    self.mock.stop()
+    return super().tearDown()
 
 class TestRemoteHttpTfStateService(unittest.TestCase):
 
