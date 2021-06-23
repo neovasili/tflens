@@ -46,3 +46,13 @@ class NotValidHttpLocation(CustomException):
 
   def __init__(self):
     super().__init__("Invalid Http location. Must be something like 'http(s)://http_server/'")
+
+class NotEmptyColumnsToShow(CustomException):
+
+  def __init__(self):
+    super().__init__("You need to show at least one column")
+
+class NotExistingColumn(CustomException):
+
+  def __init__(self, column_name: str):
+    super().__init__(f"Column `{column_name}` does not exists")
