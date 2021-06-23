@@ -1,46 +1,45 @@
+from tflens.exception.exception import NotExistingColumn
+
+
 class TfStateResource():
 
   def __init__(self, resource: dict):
     super().__init__()
     self.__resource = resource
-    self.__module = None
+    self.__module = '-'
 
     if 'module' in self.__resource:
-      self.__module = self.__resource['module']
+      self.__module = self.__resource['module'].split('.')[1]
 
-    self.__mode = self.__resource['mode']
-    self.__type = self.__resource['type']
-    self.__name = self.__resource['name']
-    self.__provider = self.__resource['provider']
-    self.__instances = self.__resource['instances']
+  def get_str_row(self, show_columns: list = None):
+    result = list()
+    for column in show_columns:
+      if column == 'module':
+        value = self.__module
+      else:
+        if column not in self.__resource:
+          raise NotExistingColumn(column_name=column)
 
-  @classmethod
-  def get_str_headers(cls):
-    return ['provider', 'type', 'mode', 'name', 'module']
+        value = self.__resource[column]
 
-  def get_str_row(self):
-    return [
-      self.__provider,
-      self.__type,
-      self.__mode,
-      self.__name,
-      self.get_parent_module()
-    ]
+      result.append(value)
+
+    return result
 
   def get_name(self):
-    return self.__name
+    return self.__resource['name']
 
   def get_type(self):
-    return self.__type
+    return self.__resource['type']
 
   def get_provider(self):
-    return self.__provider
+    return self.__resource['provider']
 
   def get_mode(self):
-    return self.__mode
+    return self.__resource['mode']
 
   def get_parent_module(self):
-    return self.__module.split('.')[1] if self.__module else '-'
+    return self.__module
 
   def get_instances_count(self):
-    return len(self.__instances)
+    return len(self.__resource['instances'])

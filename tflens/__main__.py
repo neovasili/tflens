@@ -1,8 +1,15 @@
-from pathlib import Path
+import sys
 import argparse
+
+from pathlib import Path
 
 from tflens.helper.config import VERSION
 from tflens.helper.remote import RemoteHelper
+
+from tflens.exception.exception import (
+  NotExistingColumn,
+  NotEmptyColumnsToShow,
+)
 
 parser = argparse.ArgumentParser(
   description='Terraform lens is a CLI tool that enables developers have a summarized view of tfstate resources.'
@@ -22,6 +29,14 @@ parser.add_argument('-o', '--output',
   action="store",
   dest="output",
   help="Defines output type (markdown|html). If empty outputs in terminal",
+  default="")
+
+parser.add_argument('-s', '--show-columns',
+  type=str,
+  action="store",
+  dest="show_columns",
+  help="Comma separated string list with columns to show in output. \
+    Default list is: 'provider,type,mode,name,module'",
   default="")
 
 parser.add_argument('-m', '--filter-module',
@@ -87,6 +102,7 @@ args = parser.parse_args()
 
 ARGS_FILE_LOCATION = args.file_location
 ARGS_OUTPUT = args.output
+ARGS_SHOW_COLUMNS = args.show_columns
 ARGS_FILTER_MODULE = args.filter_module
 ARGS_FILTER_NAME = args.filter_name
 ARGS_FILTER_TYPE = args.filter_type
@@ -118,7 +134,17 @@ def main():
     '': tfstate_controller.show_resources,
   }
 
-  output_router[ARGS_OUTPUT]()
+  show_columns = None
+
+  if ARGS_SHOW_COLUMNS != "":
+    show_columns = ARGS_SHOW_COLUMNS.split(',')
+
+  try:
+    output_router[ARGS_OUTPUT](show_columns=show_columns)
+
+  except (NotExistingColumn, NotEmptyColumnsToShow) as error:
+    print(str(error))
+    sys.exit(1)
 
 if __name__ == "__main__":
   main()

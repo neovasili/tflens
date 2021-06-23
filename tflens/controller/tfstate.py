@@ -33,23 +33,26 @@ class TfStateController():
       resources=self.__tfstate.get_resources()
     ).apply_filter()
 
-  def show_resources(self):
+  def show_resources(self, show_columns: list = None):
     table = MarkdownTableHelper(
-      rows=self.__resources
+      rows=self.__resources,
+      show_columns=show_columns,
     )
 
     table.print()
 
-  def create_markdown_file(self):
+  def create_markdown_file(self, show_columns: list = None):
     table = MarkdownTableHelper(
-      rows=self.__resources
+      rows=self.__resources,
+      show_columns=show_columns,
     )
 
     table.write_markdown_file()
 
-  def create_html_file(self):
+  def create_html_file(self, show_columns: list = None):
     table = HtmlTableHelper(
-      rows=self.__resources
+      rows=self.__resources,
+      show_columns=show_columns,
     )
 
     table.write_html_file()
