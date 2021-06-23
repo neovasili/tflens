@@ -6,7 +6,6 @@ from tests_config import (
   NON_VALID_TFSTATE_CONTENT,
   VALID_MODULE_RESOURCE,
   VALID_NON_MODULE_RESOURCE,
-  NON_VALID_RESOURCE
 )
 from tflens.model.tfstate import TfState
 from tflens.model.tfstate_resource import TfStateResource
@@ -48,7 +47,6 @@ class TestTfStateResource(unittest.TestCase):
   def setUp(self):
     self.valid_module_resource = VALID_MODULE_RESOURCE
     self.valid_non_module_resource = VALID_NON_MODULE_RESOURCE
-    self.non_valid_resource = NON_VALID_RESOURCE
 
   def test_valid_module_resource(self):
     tfstate_resource = TfStateResource(self.valid_module_resource)
@@ -59,21 +57,6 @@ class TestTfStateResource(unittest.TestCase):
     tfstate_resource = TfStateResource(self.valid_non_module_resource)
 
     self.assertEqual(tfstate_resource.get_parent_module(), '-')
-
-  def test_non_valid_resource(self):
-    self.assertRaises(
-      KeyError,
-      TfStateResource,
-      self.non_valid_resource
-    )
-
-  def test_str_columns_length(self):
-    tfstate_resource = TfStateResource(self.valid_module_resource)
-
-    self.assertEqual(
-      len(tfstate_resource.get_str_headers()),
-      len(tfstate_resource.get_str_row())
-    )
 
   def test_instances_count_empty_resource(self):
     tfstate_resource = TfStateResource(self.valid_module_resource)
