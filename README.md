@@ -41,7 +41,10 @@ Regarding the produced output, there are three possibilities:
 The tool has been tested with tfstate files for the following terraform versions:
 
 * 0.12.0 - 0.12.29
-* 0.13.0 - 0.13.5
+* 0.13.0 - 0.13.7
+* 0.14.0 - 0.14.11
+* 0.15.0 - 0.14.5
+* 1.0.0
 
 ## Install
 
@@ -74,6 +77,8 @@ optional arguments:
         If empty local is used.
         When remote is defined, you also need to specify --file-location with the tfstate location
         according to the following pattern: bucket-name/tfstate-key
+  -s SHOW_COLUMNS, --show-columns SHOW_COLUMNS
+        Comma separated string list with columns to show in output. Default list is: 'provider,type,mode,name,module'
   -m FILTER_MODULE, --filter-module FILTER_MODULE
         Applies a regular expression to the module field in order to filter the resources list to output
   -n FILTER_NAME, --filter-name FILTER_NAME
@@ -103,6 +108,28 @@ View table of resources for a tfstate located in the file system in the director
 |--------------|---------------------|---------|-------------------------------|--------|
 | provider.aws | aws_caller_identity |   data  |        current_user           |  test  |
 | provider.aws |  aws_dynamodb_table | managed | dynamodb-terraform-state-lock |   -    |
+```
+
+View table of resources for a tfstate located in the file system in the directory removing provider column:
+
+```bash
+➜ tflens --show-columns "type,mode,name,module"
+
+|        type         |   mode  |           name                | module |
+|---------------------|---------|-------------------------------|--------|
+| aws_caller_identity |   data  |        current_user           |  test  |
+|  aws_dynamodb_table | managed | dynamodb-terraform-state-lock |   -    |
+```
+
+This feature can be also used to change columns order:
+
+```bash
+➜ tflens --show-columns "module,name,type"
+
+| module |           name                |        type         |
+|--------|-------------------------------|---------------------|
+|  test  |        current_user           | aws_caller_identity |
+|   -    | dynamodb-terraform-state-lock |  aws_dynamodb_table |
 ```
 
 View filtered table of resources for a tfstate located in the file system in the directory:
